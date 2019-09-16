@@ -1,0 +1,8 @@
+s_min	 2.5
+s_max	158
+bias 1
+f_v  0.515
+f1 0.5
+f2 0.3
+sig_shift 0
+input_power_spectrum power_spec_z0.txt
