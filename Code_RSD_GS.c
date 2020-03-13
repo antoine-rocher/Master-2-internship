@@ -27,7 +27,7 @@ double	fg,										// growth factor
 			 	f1,										//Bias factor CLPT
 			 	f2,										//Bias factor CLPT
 				sig_shift;							
-int val;												// Nb of lines in the files Xi_r, Sigma and V12
+	const int val=160;												// Nb of lines in the files Xi_r_CLPT, Sigma_CLPT and V12_CLPT
 struct my_f_params { double a; double b; };
 
 /*********************************************************************************************************************************************************************/
@@ -650,7 +650,7 @@ void interpole_sigma()
 	int i, val =150;
 	double S_x[val], S_par[val], S_per[val];
 	FILE* fx;
-   	fx = fopen("../../CLPT/Sigma_simu.dat", "r");
+   	fx = fopen("../../CLPT/Sigma.dat", "r");
 	for(i=0; i < val; i++) fscanf(fx, "%lf %lf %lf\n", &S_x[i], &S_par[i], &S_per[i]);
 	acc[8] = gsl_interp_accel_alloc ();
     spline[8] = gsl_spline_alloc(gsl_interp_cspline, val);
@@ -725,7 +725,7 @@ void write(char f[], double func(double))
 /***************\\MAIN FUNCTION\\**********************************************************************************************************************************/
 int main (int argc, char *argv[])
 {	
-	double spi,sp, li;
+	double spi,sp,li;
     int i, nLignes;
 	FILE *fi, *par, *ps, *f;
 	char file[BUFSIZ];
@@ -739,7 +739,7 @@ int main (int argc, char *argv[])
 	smax=158;
 	val=160;
 //	printf("f1=%lf f2=%lf\n",f1,f2);
-//	char* file = "power_spec_simu_EBOSS.txt";*/
+//	char* file = "power_spec_EBOSS.txt";*/
 	par = fopen(argv[1],"r");  
 	
 // Check parameter file
@@ -781,14 +781,13 @@ int main (int argc, char *argv[])
 	kmin=1e30;
 	kmax=0;		
 	for(i=0; i < nLignes; i++) {
-		double val;
-		fscanf(ps, "%lf %*f\n", &val);
-		if (val<kmin) kmin=val;
-		if (val>kmax) kmax=val;
+		double va;
+		fscanf(ps, "%lf %*f\n", &va);
+		if (va<kmin) kmin=va;
+		if (va>kmax) kmax=va;
 	}
 	fclose(ps);
-	lk = kmax-kmin;
-
+	lk = kmax-kmin;	
 // Interpolation of power spectrum file
 	interpole(1,file, nLignes);    
 
@@ -797,15 +796,16 @@ int main (int argc, char *argv[])
 //	printf("s8=%lf\n",sig8);
 
 // Compute and save functions in text files	
-	write("data_simu/Xim.dat",Xim);
-    write("data_simu/V12.dat",V12);
-    write("data_simu/Psiper.dat",Psiper);
-    write("data_simu/Psipar.dat",Psipar);
-   
-    interpole(2,"data_simu/Xim.dat", li); 
-    interpole(3,"data_simu/V12.dat", li); 		
-    interpole(4,"data_simu/Psiper.dat", li); 
-    interpole(5,"data_simu/Psipar.dat", li); 
+	write("data/Xim.dat",Xim);
+    write("data/V12.dat",V12);
+    write("data/Psiper.dat",Psiper);
+    write("data/Psipar.dat",Psipar);
+
+    interpole(2,"data/Xim.dat", li); 
+    interpole(3,"data/V12.dat", li); 		
+    interpole(4,"data/Psiper.dat", li); 
+    interpole(5,"data/Psipar.dat", li); 
+
 	interpole_Xi();
 	interpole_V12();
 	interpole_sigma();
@@ -835,7 +835,7 @@ int main (int argc, char *argv[])
 	fclose(fi);
 
 	//Correlation function Xi_s(spar,sper)
-	f = fopen("data_simu/Xi_s.dat","w+");       
+	f = fopen("data/Xi_s.dat","w+");       
     printf("Calcul de Xis\n");	  
     for(spi=smin; spi<smax; spi+=0.1){   
    		for(sp=smin; sp<smax; sp+=0.1){                         
@@ -845,7 +845,7 @@ int main (int argc, char *argv[])
      }
     fclose(f);
 
-	f = fopen("data_simu/Xi_s_CLPT.dat","w+");       
+	f = fopen("data/Xi_s_CLPT.dat","w+");       
     printf("Calcul de Xis_CLPT\n");       			  
     for(spi=smin; spi<smax; spi+=0.1){   
    		for(sp=smin; sp<smax; sp+=0.1){                         
