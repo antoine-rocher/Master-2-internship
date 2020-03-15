@@ -27,7 +27,7 @@ double	fg,										// growth factor
 			 	f1,										//Bias factor CLPT
 			 	f2,										//Bias factor CLPT
 				sig_shift;							
-	const int val=160;												// Nb of lines in the files Xi_r_CLPT, Sigma_CLPT and V12_CLPT
+	const int val=160;									// Nb of lines in the files Xi_r_CLPT, Sigma_CLPT and V12_CLPT
 struct my_f_params { double a; double b; };
 
 /*********************************************************************************************************************************************************************/

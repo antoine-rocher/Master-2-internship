@@ -1728,7 +1728,7 @@ void M_2 (double y, double R, double M2_fin[])
 void get_Sigma ()
 {	
 	int i, n=8;
-	double r, result	[n];
+	double r, result[n];
 	FILE *fi;
 	printf("Calculating Sigma...\n");
 	fi = fopen("data/Sigma_12_CLPT.dat","w+"); 	
